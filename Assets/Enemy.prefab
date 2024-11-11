@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 2059569598606352296}
-  player: {fileID: 0}
+  player: {fileID: 7298661951207074343, guid: cdcd45344bb1d244aaa838b0c9411737, type: 3}
   projectile: {fileID: 3172963939277759847, guid: 912d83fb3107b1741b84a24cbb6a14e5,
     type: 3}
   whatIsGround:
@@ -186,6 +186,6 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
