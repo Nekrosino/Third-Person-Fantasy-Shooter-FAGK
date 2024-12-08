@@ -13,7 +13,7 @@ public class PlayerController1 : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    bool readyToJump;
+    public bool readyToJump;
 
     public Transform orientation;
 
@@ -29,7 +29,7 @@ public class PlayerController1 : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     private void Awake()
     {
@@ -66,7 +66,8 @@ public class PlayerController1 : MonoBehaviour
         moveDirection = orientation.forward * moveInput.y + orientation.right * moveInput.x;
         if(grounded)
         rb.AddForce(moveDirection.normalized * movespeed * 10f, ForceMode.Force);
-
+     
+       
 
         else if(!grounded)
             rb.AddForce(moveDirection.normalized * movespeed * 10f * airMultiplier, ForceMode.Force);
@@ -75,7 +76,7 @@ public class PlayerController1 : MonoBehaviour
     private void Update()
     {
         //ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f, whatIsGround);
 
         SpeedControl();
 
@@ -126,6 +127,14 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 
+    public void onShoot(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            Debug.Log("Strzal");
+        }
+    }
+
     private void Jump()
     {
 
@@ -141,4 +150,11 @@ public class PlayerController1 : MonoBehaviour
     {
         MovePlayer();
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * (playerHeight * 0.5f));
+    }
+
 }

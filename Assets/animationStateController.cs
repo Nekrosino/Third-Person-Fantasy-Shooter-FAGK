@@ -21,7 +21,7 @@ public class animationStateController : MonoBehaviour
     {
         bool isRunning = animator.GetBool(isRunningHash);
         bool isWalking = animator.GetBool(isWalkingHash);
-        bool forwardPressed = Input.GetKey(KeyCode.UpArrow);
+        bool forwardPressed = Input.GetKey(KeyCode.W);
         bool runPressed = Input.GetKey(KeyCode.LeftShift);
         if (!isWalking && forwardPressed)
         {
