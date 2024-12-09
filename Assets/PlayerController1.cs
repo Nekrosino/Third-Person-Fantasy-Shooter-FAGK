@@ -99,7 +99,7 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 
-    public void onJump(InputAction.CallbackContext context)
+/*    public void onJump(InputAction.CallbackContext context)
     {   
         if(context.performed && grounded && readyToJump)
         {   
@@ -125,7 +125,7 @@ public class PlayerController1 : MonoBehaviour
 
             Invoke(nameof(ResetJump), jumpCooldown);
         }
-    }
+    }*/
 
     public void onShoot(InputAction.CallbackContext context)
     {
