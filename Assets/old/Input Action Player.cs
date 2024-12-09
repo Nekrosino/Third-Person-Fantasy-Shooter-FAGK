@@ -57,6 +57,20 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
+                    ""id"": ""dca120f0-1d6a-4b32-8467-e5d18ef51052"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpawnWall"",
+                    ""type"": ""Button"",
+                    ""id"": ""343a7ec8-ba3b-429e-ae71-8e77b0e24561"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                     ""id"": ""01675053-951e-497e-b161-60cff0867f28"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -144,6 +158,23 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5b1e5695-682e-4229-a672-e9a47fd1e99f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23c854a4-070b-4a72-a3be-08bc8a091fbc"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SpawnWall"",
                     ""id"": ""be0e7cbc-2675-431a-a086-2a4b30cab018"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -181,6 +212,7 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_SpawnWall = m_Player.FindAction("SpawnWall", throwIfNotFound: true);
     }
 
     ~@InputActionPlayer()
@@ -251,6 +283,7 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_SpawnWall;
     public struct PlayerActions
     {
         private @InputActionPlayer m_Wrapper;
@@ -259,6 +292,7 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @SpawnWall => m_Wrapper.m_Player_SpawnWall;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -280,6 +314,9 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @SpawnWall.started += instance.OnSpawnWall;
+            @SpawnWall.performed += instance.OnSpawnWall;
+            @SpawnWall.canceled += instance.OnSpawnWall;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -296,6 +333,10 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @SpawnWall.started -= instance.OnSpawnWall;
+            @SpawnWall.performed -= instance.OnSpawnWall;
+            @SpawnWall.canceled -= instance.OnSpawnWall;
+
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -328,5 +369,8 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnSpawnWall(InputAction.CallbackContext context);
+
+
     }
 }
