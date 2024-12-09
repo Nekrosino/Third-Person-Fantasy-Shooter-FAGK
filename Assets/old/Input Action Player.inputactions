@@ -49,6 +49,11 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                    "id": "01675053-951e-497e-b161-60cff0867f28",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -148,6 +153,12 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "SpawnWall",
+                    "id": "be0e7cbc-2675-431a-a086-2a4b30cab018",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

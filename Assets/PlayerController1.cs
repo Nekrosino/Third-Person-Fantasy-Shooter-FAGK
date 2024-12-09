@@ -19,17 +19,19 @@ public class PlayerController1 : MonoBehaviour
     public float airMultiplier;
     public bool wallCoolDown;
     bool readyToJump;
+    public bool readyToJump;
+
 
 
 
 
  
-    public GameObject wallPrefab; // Prefab œciany
+    public GameObject wallPrefab; // Prefab ï¿½ciany
     public Transform playerCamera; // Kamera gracza (lub gracz)
-    public float spawnDistance = 3f; // Odleg³oœæ, na której œciana zostanie postawiona
+    public float spawnDistance = 3f; // Odlegï¿½oï¿½ï¿½, na ktï¿½rej ï¿½ciana zostanie postawiona
 
-    public int maxWalls = 4; // Maksymalna liczba œcian
-    private int wallsPlaced = 0; // Licznik postawionych œcian
+    public int maxWalls = 4; // Maksymalna liczba ï¿½cian
+    private int wallsPlaced = 0; // Licznik postawionych ï¿½cian
 
 
 
@@ -49,7 +51,7 @@ public class PlayerController1 : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     private void Awake()
     {
@@ -92,7 +94,8 @@ public class PlayerController1 : MonoBehaviour
         moveDirection = orientation.forward * moveInput.y + orientation.right * moveInput.x;
         if(grounded)
         rb.AddForce(moveDirection.normalized * movespeed * 10f, ForceMode.Force);
-
+     
+       
 
         else if(!grounded)
             rb.AddForce(moveDirection.normalized * movespeed * 10f * airMultiplier, ForceMode.Force);
@@ -101,7 +104,7 @@ public class PlayerController1 : MonoBehaviour
     private void Update()
     {
         //ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f, whatIsGround);
 
         SpeedControl();
 
@@ -124,9 +127,6 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 
-
- 
-
     private void SpawnWall(InputAction.CallbackContext context)
     {
         if (context.performed && wallCoolDown)
@@ -134,7 +134,7 @@ public class PlayerController1 : MonoBehaviour
             
             if (wallsPlaced >= maxWalls)
             {
-                Debug.Log("Nie mo¿esz postawiæ wiêcej œcian.");
+                Debug.Log("Nie moï¿½esz postawiï¿½ wiï¿½cej ï¿½cian.");
                 return;
             }
             
@@ -143,7 +143,7 @@ public class PlayerController1 : MonoBehaviour
 
             if (wallPrefab == null || playerCamera == null)
             {
-                Debug.LogWarning("Nie mo¿na postawiæ œciany.Upewnij siê, ¿e wallPrefab oraz playerCamera s¹ przypisane.");
+                Debug.LogWarning("Nie moï¿½na postawiï¿½ ï¿½ciany.Upewnij siï¿½, ï¿½e wallPrefab oraz playerCamera sï¿½ przypisane.");
                 return;
             }
 
@@ -153,30 +153,31 @@ public class PlayerController1 : MonoBehaviour
 
             grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
 
-            // Wyrównanie pozycji do pod³o¿a za pomoc¹ Raycast
+            // Wyrï¿½wnanie pozycji do podï¿½oï¿½a za pomocï¿½ Raycast
             if (Physics.Raycast(spawnPosition + Vector3.up, Vector3.down, out RaycastHit hitInfo))
             {
-                spawnPosition = hitInfo.point; // Przesuniêcie na powierzchniê pod³o¿a
+                spawnPosition = hitInfo.point; // Przesuniï¿½cie na powierzchniï¿½ podï¿½oï¿½a
             }
 
-            // Obrót: ignorujemy nachylenie kamery w osi Y
+            // Obrï¿½t: ignorujemy nachylenie kamery w osi Y
             Vector3 forwardDirection = playerCamera.forward;
-            forwardDirection.y = 0; // Ustawienie p³askiej orientacji
+            forwardDirection.y = 0; // Ustawienie pï¿½askiej orientacji
             Quaternion spawnRotation = Quaternion.LookRotation(forwardDirection);
 
-            // Spawnowanie œciany
+            // Spawnowanie ï¿½ciany
             Instantiate(wallPrefab, spawnPosition, spawnRotation);
 
             Invoke(nameof(resetWallsCoolDown), .5f);
 
-            // Zwiêkszenie licznika
+            // Zwiï¿½kszenie licznika
             wallsPlaced++;
             
         }
     }
     
 
-    public void onJump(InputAction.CallbackContext context)
+/*    public void onJump(InputAction.CallbackContext context)
+
     {   
         if(context.performed && grounded && readyToJump)
         {   
@@ -201,6 +202,14 @@ public class PlayerController1 : MonoBehaviour
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
             Invoke(nameof(ResetJump), jumpCooldown);
+        }
+    }*/
+
+    public void onShoot(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            Debug.Log("Strzal");
         }
     }
 
@@ -232,4 +241,11 @@ public class PlayerController1 : MonoBehaviour
     {
         MovePlayer();
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * (playerHeight * 0.5f));
+    }
+
 }

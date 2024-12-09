@@ -71,6 +71,11 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                    ""id"": ""01675053-951e-497e-b161-60cff0867f28"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -170,6 +175,12 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
                     ""action"": ""SpawnWall"",
+                    ""id"": ""be0e7cbc-2675-431a-a086-2a4b30cab018"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -325,6 +336,7 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
             @SpawnWall.started -= instance.OnSpawnWall;
             @SpawnWall.performed -= instance.OnSpawnWall;
             @SpawnWall.canceled -= instance.OnSpawnWall;
+
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -358,5 +370,7 @@ public partial class @InputActionPlayer: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnSpawnWall(InputAction.CallbackContext context);
+
+
     }
 }
