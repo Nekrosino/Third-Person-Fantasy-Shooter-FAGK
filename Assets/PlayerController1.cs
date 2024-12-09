@@ -11,6 +11,7 @@ public class PlayerController1 : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float movespeed;
+   
 
     public float groundDrag;
 
@@ -18,12 +19,7 @@ public class PlayerController1 : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     public bool wallCoolDown;
-    bool readyToJump;
     public bool readyToJump;
-
-
-
-
 
  
     public GameObject wallPrefab; // Prefab �ciany
@@ -44,7 +40,7 @@ public class PlayerController1 : MonoBehaviour
     private Vector2 moveInput;
 
    // private Vector2 lookInput;
-    [SerializeField] InputActionPlayer playerControls;
+    [SerializeField] PlayerInput playerControls;
 
     [SerializeField] Rigidbody rb;
 
@@ -55,7 +51,7 @@ public class PlayerController1 : MonoBehaviour
 
     private void Awake()
     {
-        playerControls = new InputActionPlayer();
+        playerControls = new PlayerInput();
 
     }
 
@@ -210,16 +206,9 @@ public class PlayerController1 : MonoBehaviour
         if(context.performed)
         {
             Debug.Log("Strzal");
-        }
-    }
+         
 
-    public void OnShoot(InputAction.CallbackContext context)
-    {
-        if(context.performed)
-        {
-            Debug.Log("Test");
         }
-        
     }
 
     private void Jump()

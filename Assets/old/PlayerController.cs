@@ -9,12 +9,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float rotationspeed = 1f;
     private Vector2 moveInput;
     private Vector2 lookInput;
-    [SerializeField] InputActionPlayer playerControls;
+    [SerializeField] PlayerInput playerControls;
     [SerializeField] Rigidbody rb;
 
     private void Awake()
     {
-        playerControls = new InputActionPlayer();
+        playerControls = new PlayerInput();
     }
 
     private void OnEnable()
