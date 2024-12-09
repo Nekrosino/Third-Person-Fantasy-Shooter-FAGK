@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
+
+
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public class PlayerController1 : MonoBehaviour
@@ -13,7 +17,23 @@ public class PlayerController1 : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
+    public bool wallCoolDown;
     bool readyToJump;
+
+
+
+
+ 
+    public GameObject wallPrefab; // Prefab œciany
+    public Transform playerCamera; // Kamera gracza (lub gracz)
+    public float spawnDistance = 3f; // Odleg³oœæ, na której œciana zostanie postawiona
+
+    public int maxWalls = 4; // Maksymalna liczba œcian
+    private int wallsPlaced = 0; // Licznik postawionych œcian
+
+
+
+
 
     public Transform orientation;
 
@@ -34,6 +54,7 @@ public class PlayerController1 : MonoBehaviour
     private void Awake()
     {
         playerControls = new InputActionPlayer();
+
     }
 
     private void Start()
@@ -41,20 +62,25 @@ public class PlayerController1 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         readyToJump = true;
+        wallCoolDown = true;
     }
 
     private void OnEnable()
     {
       playerControls.Enable();
+      playerControls.Player.SpawnWall.performed += SpawnWall; 
 
     }
 
     private void OnDisable()
     {
+       
+       playerControls.Player.SpawnWall.performed -= SpawnWall; 
        playerControls.Disable();
 
     }
 
+  
     public void onMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -98,6 +124,58 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 
+
+ 
+
+    private void SpawnWall(InputAction.CallbackContext context)
+    {
+        if (context.performed && wallCoolDown)
+        {
+            
+            if (wallsPlaced >= maxWalls)
+            {
+                Debug.Log("Nie mo¿esz postawiæ wiêcej œcian.");
+                return;
+            }
+            
+
+            wallCoolDown = false;   
+
+            if (wallPrefab == null || playerCamera == null)
+            {
+                Debug.LogWarning("Nie mo¿na postawiæ œciany.Upewnij siê, ¿e wallPrefab oraz playerCamera s¹ przypisane.");
+                return;
+            }
+
+            // Obliczenie pozycji przed graczem
+            Vector3 spawnPosition = playerCamera.position + playerCamera.forward * spawnDistance;
+
+
+            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+
+            // Wyrównanie pozycji do pod³o¿a za pomoc¹ Raycast
+            if (Physics.Raycast(spawnPosition + Vector3.up, Vector3.down, out RaycastHit hitInfo))
+            {
+                spawnPosition = hitInfo.point; // Przesuniêcie na powierzchniê pod³o¿a
+            }
+
+            // Obrót: ignorujemy nachylenie kamery w osi Y
+            Vector3 forwardDirection = playerCamera.forward;
+            forwardDirection.y = 0; // Ustawienie p³askiej orientacji
+            Quaternion spawnRotation = Quaternion.LookRotation(forwardDirection);
+
+            // Spawnowanie œciany
+            Instantiate(wallPrefab, spawnPosition, spawnRotation);
+
+            Invoke(nameof(resetWallsCoolDown), .5f);
+
+            // Zwiêkszenie licznika
+            wallsPlaced++;
+            
+        }
+    }
+    
+
     public void onJump(InputAction.CallbackContext context)
     {   
         if(context.performed && grounded && readyToJump)
@@ -126,6 +204,15 @@ public class PlayerController1 : MonoBehaviour
         }
     }
 
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            Debug.Log("Test");
+        }
+        
+    }
+
     private void Jump()
     {
 
@@ -135,7 +222,11 @@ public class PlayerController1 : MonoBehaviour
     {
         readyToJump = true;
     }
-
+    
+    private void resetWallsCoolDown()
+    {
+        wallCoolDown = true;
+    }
 
     private void FixedUpdate()
     {
