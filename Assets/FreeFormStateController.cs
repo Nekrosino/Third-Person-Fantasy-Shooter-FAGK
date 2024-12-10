@@ -9,6 +9,7 @@ public class FreeFormStateController : MonoBehaviour
     float velocityZ = 0.0f;
     public float acceleration = 0.2f;
     public float deceleration = 0.5f;
+    bool isJumping;
     int VelocityHashX;
     int VelocityHashZ;
     int isJumpingHash;
@@ -18,6 +19,7 @@ public class FreeFormStateController : MonoBehaviour
         VelocityHashX = Animator.StringToHash("VelocityX");
         VelocityHashZ = Animator.StringToHash("VelocityZ");
         isJumpingHash = Animator.StringToHash("isJumping");
+        isJumping = false;
     }
 
     void Update()
@@ -73,6 +75,12 @@ public class FreeFormStateController : MonoBehaviour
         {
             velocityX = -1f;
         }
+        if(jumpPressed && !isJumping)
+        {
+            animator.SetBool(isJumpingHash, true);
+            Invoke(nameof(onJump), 2f);
+        }
+
 
         animator.SetFloat(VelocityHashZ, velocityZ);
         animator.SetFloat(VelocityHashX, velocityX);
@@ -80,7 +88,14 @@ public class FreeFormStateController : MonoBehaviour
 
     }
 
+    public void onJump()
+    {
+        animator.SetBool(isJumpingHash, false);
+    }
 
-
+    public void resetJump()
+    {
+        isJumping = false;
+    }
 
 }

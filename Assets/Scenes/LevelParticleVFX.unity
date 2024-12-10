@@ -141,7 +141,6 @@ GameObject:
   - component: {fileID: 5104837}
   - component: {fileID: 5104838}
   - component: {fileID: 5104839}
-  - component: {fileID: 5104840}
   - component: {fileID: 5104841}
   m_Layer: 0
   m_Name: Player
@@ -186,7 +185,7 @@ Transform:
   m_GameObject: {fileID: 5104832}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.049121, y: 1.902, z: 12.14}
+  m_LocalPosition: {x: 6.049121, y: 1.969, z: 12.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -207,14 +206,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movespeed: 7
-  groundDrag: 5
+  groundDrag: 10
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 0.4
+  wallCoolDown: 0
   readyToJump: 0
+  wallPrefab: {fileID: 3127430904149813508, guid: e1454346c7d01d14eb5b95acf1e58067,
+    type: 3}
+  playerCamera: {fileID: 2084120461}
+  spawnDistance: 3
+  maxWalls: 4
   orientation: {fileID: 481413245}
   rb: {fileID: 5104833}
-  playerHeight: 2
+  playerHeight: 2.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 1024
@@ -231,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 59d5f1af55b2b9040ba13b99daa7b865,
+  m_Actions: {fileID: -944628639613478452, guid: 5a633bf9a4cc5cb49a917bd82e6b3ddb,
     type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -259,11 +264,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 6242b162-9136-4f3a-aba2-1f8cb220e37f
-    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+    m_ActionId: b7fea132-89be-4368-8341-68f3c6fffb24
+    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5104837}
+        m_TargetAssemblyTypeName: PlayerController1, Assembly-CSharp
+        m_MethodName: onShoot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6c5f47f3-ebd7-4662-b746-3e93eab4a44e
+    m_ActionName: Player/Shoot[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5104838}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -275,30 +296,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 252911c4-6703-44d9-9cdc-512dd0b78184
-    m_ActionName: Player/Look[/Mouse/delta]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5104838}
-        m_TargetAssemblyTypeName: PlayerController1, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 6e46f8ce-f0d9-450c-b76f-d893470ced2d
-    m_ActionName: Player/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 01675053-951e-497e-b161-60cff0867f28
-    m_ActionName: Player/Shoot[/Mouse/leftButton]
+    m_ActionId: a575916f-bf35-4501-8dae-29a8dccdd5f6
+    m_ActionName: Player/PlaceWall[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -317,27 +318,6 @@ MonoBehaviour:
   sceneName1: Level 1
   sceneName2: Level 2
   switchKey: 112
---- !u!95 &5104840
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5104832}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dae79ced46fb55547b1fd57b2352f768, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5104841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,7 +589,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 588f168190e90e94e8c93902417e0ede,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.04
+      value: -1.14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 588f168190e90e94e8c93902417e0ede,
         type: 3}
@@ -1763,7 +1743,7 @@ GameObject:
   - component: {fileID: 241387613}
   - component: {fileID: 241387615}
   - component: {fileID: 241387614}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6730,7 +6710,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0}
+  m_Center: {x: 0, y: 0.98, z: 0}
 --- !u!1001 &289205167
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9037,7 +9017,7 @@ Transform:
   m_GameObject: {fileID: 812807937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.049121, y: 3.902, z: 5.1400003}
+  m_LocalPosition: {x: 6.049121, y: 3.9689999, z: 5.1400003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9375,7 +9355,7 @@ GameObject:
   - component: {fileID: 844204338}
   - component: {fileID: 844204341}
   - component: {fileID: 844204342}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12527,7 +12507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1400419306}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ShootSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13329,7 +13309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1487706320}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BulletSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15882,7 +15862,7 @@ Transform:
   m_GameObject: {fileID: 2084120458}
   serializedVersion: 2
   m_LocalRotation: {x: 0.05273359, y: -0.00000002976086, z: 0.0000000015715835, w: 0.99860865}
-  m_LocalPosition: {x: 6.049121, y: 3.902, z: 5.1400003}
+  m_LocalPosition: {x: 6.049121, y: 3.9689999, z: 5.1400003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16555,6 +16535,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShootEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6782111861852969457, guid: 25abda6544d440a4383d3867292793c9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

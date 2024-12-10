@@ -88,12 +88,20 @@ public class PlayerController1 : MonoBehaviour
     private void MovePlayer()
     {
         moveDirection = orientation.forward * moveInput.y + orientation.right * moveInput.x;
-        if(grounded)
-        rb.AddForce(moveDirection.normalized * movespeed * 10f, ForceMode.Force);
-     
-       
+        if (grounded)
+        {   if (moveDirection.magnitude > 0)
+            {
+                rb.velocity = new Vector3(moveDirection.normalized.x * movespeed, rb.velocity.y, moveDirection.normalized.z * movespeed);
+            }
+            else
+            {
+                /*rb.AddForce(moveDirection.normalized * movespeed * 10f, ForceMode.Force);*/
+                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+            }
+        }
 
-        else if(!grounded)
+
+        else if (!grounded)
             rb.AddForce(moveDirection.normalized * movespeed * 10f * airMultiplier, ForceMode.Force);
     }
 
@@ -147,7 +155,7 @@ public class PlayerController1 : MonoBehaviour
             Vector3 spawnPosition = playerCamera.position + playerCamera.forward * spawnDistance;
 
 
-            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
 
             // Wyr�wnanie pozycji do pod�o�a za pomoc� Raycast
             if (Physics.Raycast(spawnPosition + Vector3.up, Vector3.down, out RaycastHit hitInfo))
