@@ -20,8 +20,10 @@ public class PlayerController1 : MonoBehaviour
     public float airMultiplier;
     public bool wallCoolDown;
     public bool readyToJump;
+    [SerializeField] private float rotationSpeed = 10f;
 
- 
+
+
     public GameObject wallPrefab; // Prefab �ciany
     public Transform playerCamera; // Kamera gracza (lub gracz)
     public float spawnDistance = 3f; // Odleg�o��, na kt�rej �ciana zostanie postawiona
@@ -80,8 +82,9 @@ public class PlayerController1 : MonoBehaviour
 
   
     public void onMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
+    {   
+       
+        moveInput = context.ReadValue<Vector2>();     
 
     }
 
@@ -97,6 +100,7 @@ public class PlayerController1 : MonoBehaviour
             {
                 /*rb.AddForce(moveDirection.normalized * movespeed * 10f, ForceMode.Force);*/
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                rb.drag = 100;
             }
         }
 
@@ -108,7 +112,7 @@ public class PlayerController1 : MonoBehaviour
     private void Update()
     {
         //ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f, whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.6f, whatIsGround);
 
         SpeedControl();
 
@@ -117,6 +121,13 @@ public class PlayerController1 : MonoBehaviour
             rb.drag = groundDrag;
         }
         else rb.drag = 0;
+
+
+    }
+
+    private void LateUpdate()
+    {
+        RotateWithCamera();
     }
 
     private void SpeedControl()
@@ -178,36 +189,43 @@ public class PlayerController1 : MonoBehaviour
             
         }
     }
-    
 
-/*    public void onJump(InputAction.CallbackContext context)
 
-    {   
-        if(context.performed && grounded && readyToJump)
+    /*    public void onJump(InputAction.CallbackContext context)
+
         {   
-            readyToJump = false;
-            Debug.Log("elo");
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            if(context.performed && grounded && readyToJump)
+            {   
+                readyToJump = false;
+                Debug.Log("elo");
+                rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+                rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
-            Invoke(nameof(ResetJump), jumpCooldown);
+                Invoke(nameof(ResetJump), jumpCooldown);
 
-        }
+            }
 
-        if(context.performed && readyToJump && grounded)
-        {
+            if(context.performed && readyToJump && grounded)
+            {
 
-            readyToJump = false;
-            //Jump();
-            //reset przyspieszenie Y
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+                readyToJump = false;
+                //Jump();
+                //reset przyspieszenie Y
+                rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
-            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+                rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
-    }*/
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+        }*/
+
+    private void RotateWithCamera()
+    {
+        // Zorientowanie gracza na podstawie kamery
+        Vector3 flatCameraForward = new Vector3(playerCamera.forward.x, 0, playerCamera.forward.z).normalized;
+        transform.forward = Vector3.Slerp(transform.forward, flatCameraForward, Time.deltaTime * rotationSpeed);
+    }
 
     public void onShoot(InputAction.CallbackContext context)
     {
@@ -242,7 +260,7 @@ public class PlayerController1 : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * (playerHeight * 0.5f));
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * (playerHeight * 0.6f));
     }
 
 }
