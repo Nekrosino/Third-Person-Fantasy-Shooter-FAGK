@@ -19,20 +19,22 @@ public class ThirdPersonCam : MonoBehaviour
         Cursor.visible = false;
     }
 
-    private void Update()
-    {   
-        //orientacja obracania
+    private void LateUpdate()
+    {
+        // Orientacja gracza: Obraca gracza w osi poziomej zgodnie z ruchem kamery
         Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
         orientation.forward = viewDir.normalized;
 
-
-        //obroc obiekt gracza
+        // Obliczenie kierunku ruchu na podstawie kamery
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        if(inputDir != Vector3.zero)
-            playerObj.forward = Vector3.Slerp(playerObj.forward,inputDir.normalized,Time.deltaTime*rotationSpeed);
+        // Obracanie obiektu gracza w kierunku ruchu, jeœli wystêpuje wejœcie
+        if (inputDir != Vector3.zero)
+        {
+            playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
+        }
 
     }
 }
