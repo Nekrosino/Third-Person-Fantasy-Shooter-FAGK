@@ -13,12 +13,14 @@ public class FreeFormStateController : MonoBehaviour
     int VelocityHashX;
     int VelocityHashZ;
     int isJumpingHash;
+    int isAttackingHash;
     void Start()
     {
         animator = GetComponent<Animator>();
         VelocityHashX = Animator.StringToHash("VelocityX");
         VelocityHashZ = Animator.StringToHash("VelocityZ");
         isJumpingHash = Animator.StringToHash("isJumping");
+        isAttackingHash = Animator.StringToHash("isAttacking");
         isJumping = false;
     }
 
@@ -80,6 +82,11 @@ public class FreeFormStateController : MonoBehaviour
             animator.SetBool(isJumpingHash, true);
             Invoke(nameof(onJump), 2f);
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            animator.SetBool(isAttackingHash, true);
+            Invoke(nameof(resetAttack), 0.1f);
+        }
 
 
         animator.SetFloat(VelocityHashZ, velocityZ);
@@ -91,6 +98,10 @@ public class FreeFormStateController : MonoBehaviour
     public void onJump()
     {
         animator.SetBool(isJumpingHash, false);
+    }
+    public void resetAttack()
+    {
+        animator.SetBool(isAttackingHash, false);
     }
 
     public void resetJump()

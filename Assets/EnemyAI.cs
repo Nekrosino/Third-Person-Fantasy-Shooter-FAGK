@@ -14,6 +14,9 @@ public class EnemyAI : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer;
 
     public float health;
+    Animator animator;
+    int speedHash;
+    float speed=0;
 
     //Patrol
     public Vector3 walkPoint;
@@ -23,6 +26,7 @@ public class EnemyAI : MonoBehaviour
     //Atak
     public float timeBetweenAttacks;
     bool alreadyAttacked;
+    bool isMoving;
 
     //Stany
     public float sightRange, attackRange;
@@ -30,7 +34,9 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("PlayerObj").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
+        speedHash = Animator.StringToHash("Speed");
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -43,6 +49,15 @@ public class EnemyAI : MonoBehaviour
         if (!playerInSightRange && !playerInAttackRange) Patrolling();
         if(playerInSightRange && !playerInAttackRange) ChasePlayer();
         if(playerInSightRange && playerInAttackRange) AttackPlayer();
+        if(isMoving)
+        {
+            speed++;
+            if(speed > 1)
+            {
+                speed = 1;
+            }
+            animator.SetFloat(speedHash,speed);
+        }
     }
 
     private void Patrolling()
@@ -62,6 +77,7 @@ public class EnemyAI : MonoBehaviour
     {
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
         float randomX = Random.Range(-walkPointRange, walkPointRange);
+        isMoving = true;
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
@@ -71,6 +87,7 @@ public class EnemyAI : MonoBehaviour
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
+        isMoving = true;
     }
 
     private void AttackPlayer()
